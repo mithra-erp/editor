@@ -19,7 +19,11 @@
 
 <body>
     <div class="container-fluid p-2 h-100">
-        <h1 class="text-center">Escreva seu e-mail</h1>
+        <div class="input-group mt-2 mb-2">
+            <div class="input-group-text">Id da Campanha</div>
+            <input type="text" class="form-control" id="chave">
+            <button type="button" class="btn btn-primary btn-sm align-bottom" onclick="teste()">Salvar Campanha</button>
+        </div>
         <!-- Create toolbar container -->
         <div class="quill-wrapper" class="m-2">
             <div id="toolbar">
@@ -69,16 +73,11 @@
             </div>
 
             <!-- Create the editor container -->
-            <div id="editor" spellcheck = "false">
+            <div id="editor" spellcheck="false">
                 <p>Hello World!</p>
                 <p>Some initial <strong>bold</strong> text</p>
                 <p><br></p>
             </div>
-        </div>
-        <div class="input-group mt-2">
-            <div class="input-group-text">Id da Campanha</div>
-            <input type="text" class="form-control" id="chave">
-            <button type="button" class="btn btn-primary btn-sm align-bottom" onclick="teste()">Salvar Campanha</button>
         </div>
         <!-- Include the Quill library -->
         <script src="quill.js"></script>
@@ -113,12 +112,19 @@
                             }
                         ]
                     }])
-                }).then((result) =>
-                    alert(result)
-                ).catch((result) =>
-                    alert(result)
+                }).then(async (result) => {
+                    let response = await result.json();
+                    console.log(response)
+                    if (result.ok) {
+                        window.close();
+                    } else {
+                        alert(response.message);
+                    }
+                }).catch((result) =>
+                    console.log(result)
                 )
             }
+
             //document.querySelector('#auth').value = '" + hRetorno["access_token"] + "';
         </script>
 </body>
