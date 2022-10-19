@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -23,7 +24,7 @@
         <div class="input-group mt-2 mb-2">
             <div class="input-group-text">Id da Campanha</div>
             <input type="text" class="form-control" id="chave">
-            <button type="button" class="btn btn-primary btn-sm align-bottom" onclick="teste()">Salvar Campanha</button>
+            <button type="button" class="btn btn-primary btn-sm align-bottom" onclick="save()">Salvar Campanha</button>
         </div>
         <!-- Create toolbar container -->
         <div class="quill-wrapper" class="m-2">
@@ -96,8 +97,14 @@
                 }
             });
 
-            const teste = () => {
+            const save = () => {
                 let content = document.querySelector('.ql-editor').innerHTML;
+                let description = document.querySelector('#chave').value;
+
+                if (description == '') {
+                    alert('Informe o Id da campanha');
+                    return;
+                }
 
                 showLoading();
 
@@ -108,11 +115,12 @@
                     },
                     method: "POST",
                     body: JSON.stringify([{
-                        area: 'LAYOUT',
+                        area: 'CABMKT',
                         data: [
                             {
                                 CHAVE: 'CHAVET',
-                                TEXTO: content
+                                DESCRICAO: description,
+                                LAYOUT: content
                             }
                         ]
                     }])
