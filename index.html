@@ -31,7 +31,12 @@
             <div id="toolbar">
                 <span class="ql-formats">
                     <select class="ql-font"></select>
-                    <select class="ql-size"></select>
+                    <select title="Size" class="ql-size">
+                      <option value="10px">Small</option>
+                      <option value="13px">Normal</option>
+                      <option value="18px">Large</option>
+                      <option value="32px">Huge</option>
+                    </select>
                 </span>
                 <span class="ql-formats">
                     <button class="ql-bold"></button>
@@ -87,6 +92,16 @@
         <script src="image-resize.min.js"></script>
         <!-- Initialize Quill editor -->
         <script>
+            var BackgroundStyle = Quill.import('attributors/style/background');
+            var ColorStyle = Quill.import('attributors/style/color');
+            var FontStyle = Quill.import('attributors/style/font');
+            var SizeStyle = Quill.import('attributors/style/size');
+            var AlignStyle = Quill.import('attributors/style/align');
+            Quill.register(BackgroundStyle, true);
+            Quill.register(ColorStyle, true);
+            Quill.register(FontStyle, true);
+            Quill.register(SizeStyle, true);
+            Quill.register(AlignStyle, true);
             var quill = new Quill('#editor', {
                 theme: 'snow',
                 modules: {
