@@ -23,7 +23,8 @@
     <div class="container-fluid p-2 h-100">
         <div class="input-group mt-2 mb-2">
             <div class="input-group-text">Id da Campanha</div>
-            <input type="text" class="form-control" id="chave">
+            <input type="hidden" class="form-control" id="chave">
+            <input type="text" class="form-control" id="descricao">
             <button type="button" class="btn btn-primary btn-sm align-bottom" onclick="save()">Salvar Campanha</button>
         </div>
         <!-- Create toolbar container -->
@@ -111,7 +112,8 @@
 
             const save = () => {
                 let content = document.querySelector('.ql-editor').innerHTML;
-                let description = document.querySelector('#chave').value;
+                let description = document.querySelector('#descricao').value;
+                let chave = document.querySelector('#chave').value;
 
                 if (description == '') {
                     alert('Informe o Id da campanha');
@@ -125,12 +127,12 @@
                         "Authorization": `Bearer ${sessionStorage.getItem('access_token')}`,
                         "X-Client-id": sessionStorage.getItem('x-client-id')
                     },
-                    method: "POST",
+                    method: "PUT",
                     body: JSON.stringify([{
                         area: 'CABMKT',
                         data: [
                             {
-                                CHAVE: 'CHAVET',
+                                CHAVE: chave,
                                 DESCRICAO: description,
                                 LAYOUT: content
                             }
@@ -150,48 +152,6 @@
                     console.log(result)
                 });
             }
-            
-            const editar = (id) => {
-                let content = document.querySelector('.ql-editor');
-                let description = document.querySelector('#chave');
-
-                showLoading();
-
-                window.fetch("https://api.mithra.com.br/mithra/v1/search", {
-                    headers: {
-                        "Authorization": `Bearer ${sessionStorage.getItem('access_token')}`,
-                        "X-Client-id": sessionStorage.getItem('x-client-id')
-                    },
-                    method: "POST",
-                    body: JSON.stringify([{
-                        area: 'CABMKT',
-                        search: [
-                            {
-                                field: 'CHAVE',
-                                operation: 'EQUAL_TO',
-                                value: id
-                            }
-                        ]
-                    }])
-                }).then(async (result) => {
-                    stopLoading();
-                    let response = await result.json();
-                    console.log(response)
-                    if (result.ok) {
-                        if (response.success) {
-                            let data = response.data;
-                            description.value = data[0].DESCRICAO;
-                            content.value = data[0].LAYOUT;
-                        }
-                    } else {
-                        alert(response.message);
-                    }
-                }).catch((result) => {
-                    stopLoading();
-                    console.log(result)
-                });
-            }
-
             //document.querySelector('#auth').value = '" + hRetorno["access_token"] + "';
         </script>
 </body>
