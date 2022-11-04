@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -81,9 +81,6 @@
 
             <!-- Create the editor container -->
             <div id="editor" spellcheck="false">
-                <p>Hello World!</p>
-                <p>Some initial <strong>bold</strong> text</p>
-                <p><br></p>
             </div>
         </div>
         <!-- Include the Quill library -->
@@ -145,6 +142,47 @@
                     console.log(response)
                     if (result.ok) {
                         window.close();
+                    } else {
+                        alert(response.message);
+                    }
+                }).catch((result) => {
+                    stopLoading();
+                    console.log(result)
+                });
+            }
+            
+            const editar = (id) => {
+                let content = document.querySelector('.ql-editor');
+                let description = document.querySelector('#chave');
+
+                showLoading();
+
+                window.fetch("https://api.mithra.com.br/mithra/v1/search", {
+                    headers: {
+                        "Authorization": `Bearer ${sessionStorage.getItem('access_token')}`,
+                        "X-Client-id": sessionStorage.getItem('x-client-id')
+                    },
+                    method: "POST",
+                    body: JSON.stringify([{
+                        area: 'CABMKT',
+                        search: [
+                            {
+                                field: 'CHAVE',
+                                operation: 'EQUAL_TO',
+                                value: id
+                            }
+                        ]
+                    }])
+                }).then(async (result) => {
+                    stopLoading();
+                    let response = await result.json();
+                    console.log(response)
+                    if (result.ok) {
+                        if (response.success) {
+                            let data = response.data;
+                            description.value = data[0].DESCRICAO;
+                            content.value = data[0].LAYOUT;
+                        }
                     } else {
                         alert(response.message);
                     }
