@@ -122,12 +122,13 @@
 
                 showLoading();
 
-                window.fetch("https://api.mithra.com.br/mithra/v1/template", {
+                fetch("https://api.mithra.com.br/mithra/v1/template", {
                     headers: {
                         "Authorization": `Bearer ${sessionStorage.getItem('access_token')}`,
-                        "X-Client-id": sessionStorage.getItem('x-client-id')
+                        "X-Client-id": sessionStorage.getItem('x-client-id'),
+                        'Content-Type': 'application/json'
                     },
-                    method: "PUT",
+                    method: "put",
                     body: JSON.stringify([{
                         area: 'CABMKT',
                         data: [
