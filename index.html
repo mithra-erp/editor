@@ -123,12 +123,12 @@
                 showLoading();
 
                 fetch("https://api.mithra.com.br/mithra/v1/template", {
+                    method: 'PUT',
                     headers: {
+                        'Content-Type': 'application/json',
                         "Authorization": `Bearer ${sessionStorage.getItem('access_token')}`,
-                        "X-Client-id": sessionStorage.getItem('x-client-id'),
-                        'Content-Type': 'application/json'
+                        "X-Client-id": sessionStorage.getItem('x-client-id')
                     },
-                    method: "put",
                     body: JSON.stringify([{
                         area: 'CABMKT',
                         data: [
@@ -144,7 +144,8 @@
                     let response = await result.json();
                     console.log(response)
                     if (result.ok) {
-                        window.close();
+                        alert("Registro salvo!");
+                        open(location, '_self').close();
                     } else {
                         alert(response.message);
                     }
